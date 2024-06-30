@@ -1,0 +1,13 @@
+name: lars-soerlie
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=notThePassword
+      - POSTGRES_USER=notTheUser
+      - POSTGRES_DB=portifolio
+    ports:
+      - 5432:5432
+volumes:
+  postgres:

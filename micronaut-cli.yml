@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: no.larssorlie
+testFramework: junit
+sourceLanguage: java
+buildTool: maven
+features: [app-name, data, data-jpa, flyway, http-client-test, java, java-application, jdbc-hikari, junit, logback, maven, maven-enforcer-plugin, micronaut-aot, micronaut-http-validation, postgresql, netty-server, properties, readme, serialization-jackson, shade, static-resources, test-resources]
