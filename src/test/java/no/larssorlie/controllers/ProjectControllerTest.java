@@ -13,7 +13,6 @@ import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Set;
 import no.larssorlie.models.dto.*;
-import no.larssorlie.services.ExperienceService;
 import no.larssorlie.services.ProjectService;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -51,7 +50,7 @@ public class ProjectControllerTest {
   }
 
   @Test
-  public void getExperience(RequestSpecification spec) {
+  public void getProject(RequestSpecification spec) {
     var skill1 = new SkillDTO(1L, "asdfsa", "asdf");
     var skill2 = new SkillDTO(2L, "asdfsa", "asdf");
     var skill3 = new SkillDTO(3L, "asdfsa", "asdf");
