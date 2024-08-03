@@ -1,6 +1,6 @@
 package no.larssorlie.providers;
 
-import static io.micronaut.security.errors.IssuingAnAccessTokenErrorCode.INVALID_GRANT;
+import static io.micronaut.security.errors.IssuingAnAccessTokenErrorCode.*;
 
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.errors.OauthErrorResponseException;
@@ -8,7 +8,7 @@ import io.micronaut.security.token.event.RefreshTokenGeneratedEvent;
 import io.micronaut.security.token.refresh.RefreshTokenPersistence;
 import jakarta.inject.Inject;
 import no.larssorlie.repositories.RefreshRepository;
-import org.reactivestreams.Publisher;
+import reactor.core.publisher.Mono;
 
 public class RefreshTokenHandler implements RefreshTokenPersistence {
   @Inject
@@ -32,29 +32,30 @@ public class RefreshTokenHandler implements RefreshTokenPersistence {
   }
 
   @Override
-  public Publisher<Authentication> getAuthentication(String refreshToken) {
+  public Mono<Authentication> getAuthentication(String refreshToken) {
     return refreshRepository
       .findByRefreshToken(refreshToken)
       .map(
         token -> {
-          if (token != null) {
-            if (token.getRevoked()) {
-              throw new OauthErrorResponseException(
-                INVALID_GRANT,
-                "refresh token revoked",
-                null
-              );
-            } else {
-              return Authentication.build(token.getUsername());
-            }
-          } else {
+          if (token.getRevoked()) {
             throw new OauthErrorResponseException(
+              INVALID_GRANT,
+              "refresh token revoked",
+              null
+            );
+          } else {
+            return Authentication.build(token.getUsername());
+          }
+        }
+      )
+      .switchIfEmpty(
+        Mono.defer(
+          () -> Mono.error( new OauthErrorResponseException(
               INVALID_GRANT,
               "refresh token not found",
               null
-            );
-          }
-        }
+            ))
+        )
       );
   }
 }
