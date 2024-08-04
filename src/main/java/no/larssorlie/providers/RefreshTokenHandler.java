@@ -50,11 +50,14 @@ public class RefreshTokenHandler implements RefreshTokenPersistence {
       )
       .switchIfEmpty(
         Mono.defer(
-          () -> Mono.error( new OauthErrorResponseException(
-              INVALID_GRANT,
-              "refresh token not found",
-              null
-            ))
+          () ->
+            Mono.error(
+              new OauthErrorResponseException(
+                INVALID_GRANT,
+                "refresh token not found",
+                null
+              )
+            )
         )
       );
   }

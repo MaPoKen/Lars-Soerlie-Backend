@@ -1,0 +1,30 @@
+name: "JAVA CI"
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "🗑 Free disk space"
+        run: |
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo apt-get clean
+          df -h
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Install maven plugins
+        run: mvn install
+      - name: Verify prettier
+        run: mvn prettier:check -f pom.xml
+      - name: Install micronaut
+        run: |
+          curl -s https://get.sdkman.io | bash
+          source "$HOME/.sdkman/bin/sdkman-init.sh"
+          sdk install micronaut
+      - name: Run the Maven verify phase
+        run: mvn --batch-mode --update-snapshots verify
+      - name: Run the tests
+        run: mn test
