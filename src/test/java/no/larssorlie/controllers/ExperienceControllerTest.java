@@ -48,17 +48,16 @@ public class ExperienceControllerTest {
 
     var experience1 = new ExperienceDTO(
       1L,
-      "asdfas",
-      "asdf",
+
       Set.of(skill1, skill2, skill3),
-      Set.of(project1, project2)
+      Set.of(project1, project2),"asdfas",
+            "asdf"
     );
     var experience2 = new ExperienceDTO(
       2L,
-      "asdfas",
-      "asdf",
       Set.of(skill1, skill2, skill3),
-      Set.of(project1, project2)
+      Set.of(project1, project2),"asdfas",
+            "asdf"
     );
 
     when(experienceService.getAllExperiences())
@@ -90,10 +89,10 @@ public class ExperienceControllerTest {
 
     var experience1 = new ExperienceDTO(
       1L,
-      "asdfas",
-      "asdf",
+
       Set.of(skill1, skill2, skill3),
-      Set.of(project1, project2)
+      Set.of(project1, project2),"asdfas",
+            "asdf"
     );
 
     when(experienceService.getExperience(1L))
@@ -132,17 +131,17 @@ public class ExperienceControllerTest {
 
     var experience1 = new ExperienceDTO(
       1L,
-      "asdfas",
-      "asdf",
       Set.of(skill1, skill2, skill3),
-      Set.of(project1, project2)
+      Set.of(project1, project2),
+            "asdfas",
+            "asdf"
     );
 
     var newExperience1 = new NewExperienceDTO(
-      "asdfas",
-      "asdf",
       Set.of(skill1, skill2, skill3),
-      Set.of(project1, project2)
+      Set.of(project1, project2),
+            "asdfas",
+            "asdf"
     );
 
     when(experienceService.createExperience(any()))
@@ -185,17 +184,17 @@ public class ExperienceControllerTest {
 
     var experience1 = new ExperienceDTO(
       1L,
-      "asd",
-      "asdf",
       Set.of(skill1, skill2, skill3),
-      Set.of(project1, project2)
+      Set.of(project1, project2),
+            "asdfas",
+            "asdf"
     );
 
     var newExperience1 = new NewExperienceDTO(
-      "asd",
-      "asdf",
       Set.of(skill1, skill2, skill3),
-      Set.of(project1, project2)
+      Set.of(project1, project2),
+            "asdfas",
+            "asdf"
     );
 
     when(experienceService.updateExperience(any(), any()))

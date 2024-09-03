@@ -7,12 +7,14 @@ import io.micronaut.test.annotation.MockBean;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import no.larssorlie.models.domain.Project;
 import no.larssorlie.models.domain.Skill;
 import no.larssorlie.models.dto.*;
+import no.larssorlie.models.mappers.SkillMapper;
 import no.larssorlie.repositories.SkillRepository;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -76,14 +78,14 @@ public class SkillServiceTest {
 
     NewSkillDTO s = new NewSkillDTO("asd", "asda");
 
-    when(this.skillRepository.save(s.toModel()))
-      .thenReturn(Mono.just(s.toModel(id)));
+    when(this.skillRepository.save(SkillMapper.toModel(s)))
+      .thenReturn(Mono.just(SkillMapper.toModel(s,id)));
 
     Mono<SkillDTO> t = this.skillService.createSkill(s);
 
-    assertEquals(t.block().getId(), id);
+    assertEquals(Objects.requireNonNull(t.block()).getId(), id);
 
-    verify(skillRepository).save(s.toModel(id));
+    verify(skillRepository).save(SkillMapper.toModel(s,id));
   }
 
   @Test
@@ -92,12 +94,12 @@ public class SkillServiceTest {
     NewSkillDTO s = new NewSkillDTO("asd", "asda");
     Skill sUpdated = new Skill(id, "asda", "asda");
 
-    when(this.skillRepository.update(s.toModel(id)))
+    when(this.skillRepository.update(SkillMapper.toModel(s,id)))
       .thenReturn(Mono.just(sUpdated));
 
     Mono<SkillDTO> t = this.skillService.updateSkill(id, s);
-    assertEquals(t.block().getId(), id);
-    verify(skillRepository).update(s.toModel(id));
+    assertEquals(Objects.requireNonNull(t.block()).getId(), id);
+    verify(skillRepository).update(SkillMapper.toModel(s,id));
   }
 
   @MockBean(SkillRepository.class)

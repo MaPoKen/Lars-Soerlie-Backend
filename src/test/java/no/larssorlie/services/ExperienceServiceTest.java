@@ -7,6 +7,7 @@ import io.micronaut.test.annotation.MockBean;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -17,6 +18,9 @@ import no.larssorlie.models.dto.ExperienceDTO;
 import no.larssorlie.models.dto.NewExperienceDTO;
 import no.larssorlie.models.dto.ProjectDTO;
 import no.larssorlie.models.dto.SkillDTO;
+import no.larssorlie.models.mappers.ExperienceMapper;
+import no.larssorlie.models.mappers.ProjectMapper;
+import no.larssorlie.models.mappers.SkillMapper;
 import no.larssorlie.repositories.ExperienceRepository;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -53,8 +57,8 @@ public class ExperienceServiceTest {
     when(this.experienceRepository.findAll())
       .thenReturn(
         Flux.just(
-          new Experience(id, "halla", "hei", skills, experiences),
-          new Experience(1L, "halla", "hei", skills, experiences)
+          new Experience(id, skills, experiences,"halla", "hei" ),
+          new Experience(1L, skills, experiences,"halla", "hei" )
         )
       );
 
@@ -99,7 +103,7 @@ public class ExperienceServiceTest {
 
     when(this.experienceRepository.findById(id))
       .thenReturn(
-        Mono.just(new Experience(id, "halla", "hei", skills, experiences))
+        Mono.just(new Experience(id, skills, experiences, "halla", "hei"))
       );
 
     Mono<ExperienceDTO> t = this.experienceService.getExperience(id);
@@ -131,22 +135,22 @@ public class ExperienceServiceTest {
     );
 
     NewExperienceDTO exp = new NewExperienceDTO(
-      "asdj",
-      "asda",
-      skills.stream().map(SkillDTO::toDto).collect(Collectors.toSet()),
-      projects.stream().map(ProjectDTO::toDTO).collect(Collectors.toSet())
+
+      skills.stream().map(SkillMapper::toDTO).collect(Collectors.toSet()),
+      projects.stream().map(ProjectMapper::toDTO).collect(Collectors.toSet()),"asdj",
+            "asda"
     );
 
-    Experience done = new Experience(id, "asdj", "asda", skills, projects);
+    Experience done = new Experience(id ,skills, projects, "asdj", "asda");
 
-    when(this.experienceRepository.save(exp.toModel()))
+    when(this.experienceRepository.save(ExperienceMapper.toModel(exp)))
       .thenReturn(Mono.just(done));
 
     Mono<ExperienceDTO> t = this.experienceService.createExperience(exp);
 
-    assertEquals(t.block().getId(), id);
+    assertEquals(Objects.requireNonNull(t.block()).getId(), id);
 
-    verify(experienceRepository).save(exp.toModel());
+    verify(experienceRepository).save(ExperienceMapper.toModel(exp));
   }
 
   @Test
@@ -171,22 +175,22 @@ public class ExperienceServiceTest {
     );
 
     NewExperienceDTO exp = new NewExperienceDTO(
-      "asdj",
-      "asda",
-      skills.stream().map(SkillDTO::toDto).collect(Collectors.toSet()),
-      projects.stream().map(ProjectDTO::toDTO).collect(Collectors.toSet())
+
+      skills.stream().map(SkillMapper::toDTO).collect(Collectors.toSet()),
+      projects.stream().map(ProjectMapper::toDTO).collect(Collectors.toSet()),"asdj",
+              "asda"
     );
 
-    when(this.experienceRepository.update(exp.toModel(id)))
+    when(this.experienceRepository.update(ExperienceMapper.toModel(exp,id)))
       .thenReturn(
-        Mono.just(new Experience(id, "halla", "hei", skills, projects))
+        Mono.just(new Experience(id, skills, projects, "halla", "hei"))
       );
 
     Mono<ExperienceDTO> t = this.experienceService.updateExperience(id, exp);
 
-    assertEquals(t.block().getId(), id);
+    assertEquals(Objects.requireNonNull(t.block()).getId(), id);
 
-    verify(experienceRepository).update(exp.toModel(id));
+    verify(experienceRepository).update(ExperienceMapper.toModel(exp,id));
   }
 
   @MockBean(ExperienceRepository.class)
