@@ -55,7 +55,7 @@ public class ProjectServiceTest {
 
     Mono<List<ProjectDTO>> t = this.projectService.getAllProjects();
 
-    assertEquals(t.toFuture().get().getFirst().getId(), id);
+    assertEquals(t.toFuture().get().get(0).getId(), id);
 
     verify(projectRepository).findAll();
   }

@@ -38,7 +38,7 @@ public class SkillServiceTest {
 
     Mono<List<SkillDTO>> t = this.skillService.getAllSkills();
 
-    assertEquals(t.toFuture().get().getFirst().getId(), id);
+    assertEquals(t.toFuture().get().get(0).getId(), id);
 
     verify(skillRepository).findAll();
   }

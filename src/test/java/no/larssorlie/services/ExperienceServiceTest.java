@@ -60,7 +60,7 @@ public class ExperienceServiceTest {
 
     Mono<List<ExperienceDTO>> t = this.experienceService.getAllExperiences();
 
-    assertEquals(t.toFuture().get().getFirst().getId(), id);
+    assertEquals(t.toFuture().get().get(0).getId(), id);
 
     verify(experienceRepository).findAll();
   }
