@@ -7,12 +7,15 @@ import io.micronaut.test.annotation.MockBean;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import no.larssorlie.models.domain.Project;
 import no.larssorlie.models.domain.Skill;
 import no.larssorlie.models.dto.*;
+import no.larssorlie.models.mappers.ProjectMapper;
+import no.larssorlie.models.mappers.SkillMapper;
 import no.larssorlie.repositories.ProjectRepository;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -55,7 +58,7 @@ public class ProjectServiceTest {
 
     Mono<List<ProjectDTO>> t = this.projectService.getAllProjects();
 
-    assertEquals(t.toFuture().get().getFirst().getId(), id);
+    assertEquals(t.toFuture().get().get(0).getId(), id);
 
     verify(projectRepository).findAll();
   }
@@ -113,17 +116,17 @@ public class ProjectServiceTest {
       "asa",
       "asa",
       Set.of("asdas"),
-      skills.stream().map(SkillDTO::toDto).collect(Collectors.toSet())
+      skills.stream().map(SkillMapper::toDTO).collect(Collectors.toSet())
     );
 
-    when(this.projectRepository.save(p.toModel()))
-      .thenReturn(Mono.just(p.toModel(id)));
+    when(this.projectRepository.save(ProjectMapper.toModel(p)))
+      .thenReturn(Mono.just(ProjectMapper.toModel(p, id)));
 
     Mono<ProjectDTO> t = this.projectService.createProject(p);
 
-    assertEquals(t.block().getId(), id);
+    assertEquals(Objects.requireNonNull(t.block()).getId(), id);
 
-    verify(projectRepository).save(p.toModel(id));
+    verify(projectRepository).save(ProjectMapper.toModel(p, id));
   }
 
   @Test
@@ -140,7 +143,7 @@ public class ProjectServiceTest {
       "as",
       "asd",
       Set.of("asd", "asda", "asdas"),
-      skills.stream().map(SkillDTO::toDto).collect(Collectors.toSet())
+      skills.stream().map(SkillMapper::toDTO).collect(Collectors.toSet())
     );
 
     Project pUpdated = new Project(
@@ -151,12 +154,12 @@ public class ProjectServiceTest {
       skills
     );
 
-    when(this.projectRepository.update(p.toModel(id)))
+    when(this.projectRepository.update(ProjectMapper.toModel(p, id)))
       .thenReturn(Mono.just(pUpdated));
 
     Mono<ProjectDTO> t = this.projectService.updateProject(id, p);
-    assertEquals(t.block().getId(), id);
-    verify(projectRepository).update(p.toModel(id));
+    assertEquals(Objects.requireNonNull(t.block()).getId(), id);
+    verify(projectRepository).update(ProjectMapper.toModel(p, id));
   }
 
   @MockBean(ProjectRepository.class)

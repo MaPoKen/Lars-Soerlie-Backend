@@ -5,6 +5,7 @@ import jakarta.inject.Singleton;
 import java.util.List;
 import no.larssorlie.models.dto.ExperienceDTO;
 import no.larssorlie.models.dto.NewExperienceDTO;
+import no.larssorlie.models.mappers.ExperienceMapper;
 import no.larssorlie.repositories.ExperienceRepository;
 import reactor.core.publisher.Mono;
 
@@ -16,18 +17,18 @@ public class ExperienceService {
   public Mono<List<ExperienceDTO>> getAllExperiences() {
     return experienceRepository
       .findAll()
-      .map(ExperienceDTO::toDTO)
+      .map(ExperienceMapper::toDTO)
       .collectList();
   }
 
   public Mono<ExperienceDTO> getExperience(Long id) {
-    return experienceRepository.findById(id).map(ExperienceDTO::toDTO);
+    return experienceRepository.findById(id).map(ExperienceMapper::toDTO);
   }
 
   public Mono<ExperienceDTO> createExperience(NewExperienceDTO experience) {
     return experienceRepository
-      .save(experience.toModel())
-      .map(ExperienceDTO::toDTO);
+      .save(ExperienceMapper.toModel(experience))
+      .map(ExperienceMapper::toDTO);
   }
 
   public Mono<Long> deleteExperience(Long id) {
@@ -39,7 +40,7 @@ public class ExperienceService {
     NewExperienceDTO experience
   ) {
     return experienceRepository
-      .update(experience.toModel(id))
-      .map(ExperienceDTO::toDTO);
+      .update(ExperienceMapper.toModel(experience, id))
+      .map(ExperienceMapper::toDTO);
   }
 }

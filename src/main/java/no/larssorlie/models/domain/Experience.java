@@ -4,7 +4,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder(toBuilder = true)
 @Entity
 @Table(name = "experiences")
 public class Experience {
@@ -23,52 +31,6 @@ public class Experience {
 
   @NotNull
   private String title;
-
-  public Experience(
-    Long id,
-    String title,
-    String description,
-    Set<Skill> skills,
-    Set<Project> projects
-  ) {
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.skills = skills;
-    this.projects = projects;
-  }
-
-  public Experience(
-    String title,
-    String description,
-    Set<Skill> skills,
-    Set<Project> projects
-  ) {
-    this.title = title;
-    this.description = description;
-    this.skills = skills;
-    this.projects = projects;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public Set<Skill> getSkills() {
-    return skills;
-  }
-
-  public Set<Project> getProjects() {
-    return projects;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public Long getId() {
-    return id;
-  }
 
   @Override
   public boolean equals(Object o) {
