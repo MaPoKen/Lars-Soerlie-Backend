@@ -79,13 +79,13 @@ public class SkillServiceTest {
     NewSkillDTO s = new NewSkillDTO("asd", "asda");
 
     when(this.skillRepository.save(SkillMapper.toModel(s)))
-      .thenReturn(Mono.just(SkillMapper.toModel(s,id)));
+      .thenReturn(Mono.just(SkillMapper.toModel(s, id)));
 
     Mono<SkillDTO> t = this.skillService.createSkill(s);
 
     assertEquals(Objects.requireNonNull(t.block()).getId(), id);
 
-    verify(skillRepository).save(SkillMapper.toModel(s,id));
+    verify(skillRepository).save(SkillMapper.toModel(s, id));
   }
 
   @Test
@@ -94,12 +94,12 @@ public class SkillServiceTest {
     NewSkillDTO s = new NewSkillDTO("asd", "asda");
     Skill sUpdated = new Skill(id, "asda", "asda");
 
-    when(this.skillRepository.update(SkillMapper.toModel(s,id)))
+    when(this.skillRepository.update(SkillMapper.toModel(s, id)))
       .thenReturn(Mono.just(sUpdated));
 
     Mono<SkillDTO> t = this.skillService.updateSkill(id, s);
     assertEquals(Objects.requireNonNull(t.block()).getId(), id);
-    verify(skillRepository).update(SkillMapper.toModel(s,id));
+    verify(skillRepository).update(SkillMapper.toModel(s, id));
   }
 
   @MockBean(SkillRepository.class)

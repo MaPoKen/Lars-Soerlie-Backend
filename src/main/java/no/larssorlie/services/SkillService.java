@@ -23,7 +23,9 @@ public class SkillService {
   }
 
   public Mono<SkillDTO> createSkill(NewSkillDTO newSkill) {
-    return skillRepository.save(SkillMapper.toModel(newSkill)).map(SkillMapper::toDTO);
+    return skillRepository
+      .save(SkillMapper.toModel(newSkill))
+      .map(SkillMapper::toDTO);
   }
 
   public Mono<Long> deleteSkill(Long id) {
@@ -31,6 +33,8 @@ public class SkillService {
   }
 
   public Mono<SkillDTO> updateSkill(Long id, NewSkillDTO skill) {
-    return skillRepository.update(SkillMapper.toModel(skill,id)).map(SkillMapper::toDTO);
+    return skillRepository
+      .update(SkillMapper.toModel(skill, id))
+      .map(SkillMapper::toDTO);
   }
 }

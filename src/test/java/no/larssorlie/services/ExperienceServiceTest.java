@@ -57,8 +57,8 @@ public class ExperienceServiceTest {
     when(this.experienceRepository.findAll())
       .thenReturn(
         Flux.just(
-          new Experience(id, skills, experiences,"halla", "hei" ),
-          new Experience(1L, skills, experiences,"halla", "hei" )
+          new Experience(id, skills, experiences, "halla", "hei"),
+          new Experience(1L, skills, experiences, "halla", "hei")
         )
       );
 
@@ -135,13 +135,13 @@ public class ExperienceServiceTest {
     );
 
     NewExperienceDTO exp = new NewExperienceDTO(
-
       skills.stream().map(SkillMapper::toDTO).collect(Collectors.toSet()),
-      projects.stream().map(ProjectMapper::toDTO).collect(Collectors.toSet()),"asdj",
-            "asda"
+      projects.stream().map(ProjectMapper::toDTO).collect(Collectors.toSet()),
+      "asdj",
+      "asda"
     );
 
-    Experience done = new Experience(id ,skills, projects, "asdj", "asda");
+    Experience done = new Experience(id, skills, projects, "asdj", "asda");
 
     when(this.experienceRepository.save(ExperienceMapper.toModel(exp)))
       .thenReturn(Mono.just(done));
@@ -175,13 +175,13 @@ public class ExperienceServiceTest {
     );
 
     NewExperienceDTO exp = new NewExperienceDTO(
-
       skills.stream().map(SkillMapper::toDTO).collect(Collectors.toSet()),
-      projects.stream().map(ProjectMapper::toDTO).collect(Collectors.toSet()),"asdj",
-              "asda"
+      projects.stream().map(ProjectMapper::toDTO).collect(Collectors.toSet()),
+      "asdj",
+      "asda"
     );
 
-    when(this.experienceRepository.update(ExperienceMapper.toModel(exp,id)))
+    when(this.experienceRepository.update(ExperienceMapper.toModel(exp, id)))
       .thenReturn(
         Mono.just(new Experience(id, skills, projects, "halla", "hei"))
       );
@@ -190,7 +190,7 @@ public class ExperienceServiceTest {
 
     assertEquals(Objects.requireNonNull(t.block()).getId(), id);
 
-    verify(experienceRepository).update(ExperienceMapper.toModel(exp,id));
+    verify(experienceRepository).update(ExperienceMapper.toModel(exp, id));
   }
 
   @MockBean(ExperienceRepository.class)

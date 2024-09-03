@@ -120,13 +120,13 @@ public class ProjectServiceTest {
     );
 
     when(this.projectRepository.save(ProjectMapper.toModel(p)))
-      .thenReturn(Mono.just(ProjectMapper.toModel(p,id)));
+      .thenReturn(Mono.just(ProjectMapper.toModel(p, id)));
 
     Mono<ProjectDTO> t = this.projectService.createProject(p);
 
     assertEquals(Objects.requireNonNull(t.block()).getId(), id);
 
-    verify(projectRepository).save(ProjectMapper.toModel(p,id));
+    verify(projectRepository).save(ProjectMapper.toModel(p, id));
   }
 
   @Test
@@ -154,12 +154,12 @@ public class ProjectServiceTest {
       skills
     );
 
-    when(this.projectRepository.update(ProjectMapper.toModel(p,id)))
+    when(this.projectRepository.update(ProjectMapper.toModel(p, id)))
       .thenReturn(Mono.just(pUpdated));
 
     Mono<ProjectDTO> t = this.projectService.updateProject(id, p);
     assertEquals(Objects.requireNonNull(t.block()).getId(), id);
-    verify(projectRepository).update(ProjectMapper.toModel(p,id));
+    verify(projectRepository).update(ProjectMapper.toModel(p, id));
   }
 
   @MockBean(ProjectRepository.class)

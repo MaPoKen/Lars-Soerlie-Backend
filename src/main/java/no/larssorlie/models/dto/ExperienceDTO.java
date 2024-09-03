@@ -2,7 +2,6 @@ package no.larssorlie.models.dto;
 
 import io.micronaut.serde.annotation.Serdeable;
 import java.util.Set;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

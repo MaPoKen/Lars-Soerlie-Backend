@@ -23,7 +23,9 @@ public class ProjectService {
   }
 
   public Mono<ProjectDTO> createProject(NewProjectDTO newProject) {
-    return projectRepository.save(ProjectMapper.toModel(newProject)).map(ProjectMapper::toDTO);
+    return projectRepository
+      .save(ProjectMapper.toModel(newProject))
+      .map(ProjectMapper::toDTO);
   }
 
   public Mono<Long> deleteProject(Long id) {
@@ -32,7 +34,7 @@ public class ProjectService {
 
   public Mono<ProjectDTO> updateProject(Long id, NewProjectDTO newProject) {
     return projectRepository
-      .update(ProjectMapper.toModel(newProject,id))
+      .update(ProjectMapper.toModel(newProject, id))
       .map(ProjectMapper::toDTO);
   }
 }
