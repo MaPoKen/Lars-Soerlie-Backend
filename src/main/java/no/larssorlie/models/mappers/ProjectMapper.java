@@ -10,14 +10,18 @@ import java.util.stream.Collectors;
 public class ProjectMapper {
 
     public static ProjectDTO toDTO(Project project) {
-        return new ProjectDTO().toBuilder().id(project.getId()).urls(project.getUrls()).title(project.getTitle()).description(project.getDescription()).skills(project.getSkills().stream().map(SkillDTO::toDto).collect(Collectors.toSet())).build();
+        return new ProjectDTO().toBuilder().id(project.getId()).urls(project.getUrls()).title(project.getTitle()).description(project.getDescription()).skills(project.getSkills().stream().map(SkillMapper::toDTO).collect(Collectors.toSet())).build();
     }
 
     public static Project toModel(ProjectDTO project) {
-        return new Project().toBuilder().id(project.getId()).urls(project.getUrls()).title(project.getTitle()).description(project.getDescription()).skills(project.getSkills().stream().map(SkillDTO::toModel).collect(Collectors.toSet())).build();
+        return new Project().toBuilder().id(project.getId()).urls(project.getUrls()).title(project.getTitle()).description(project.getDescription()).skills(project.getSkills().stream().map(SkillMapper::toModel).collect(Collectors.toSet())).build();
     }
 
     public static Project toModel(NewProjectDTO project) {
-        return new Project().toBuilder().urls(project.getUrls()).title(project.getTitle()).description(project.getDescription()).skills(project.getSkills().stream().map(SkillDTO::toModel).collect(Collectors.toSet())).build();
+        return new Project().toBuilder().urls(project.getUrls()).title(project.getTitle()).description(project.getDescription()).skills(project.getSkills().stream().map(SkillMapper::toModel).collect(Collectors.toSet())).build();
+    }
+
+    public static Project toModel(NewProjectDTO project, Long id) {
+        return new Project().toBuilder().id(id).urls(project.getUrls()).title(project.getTitle()).description(project.getDescription()).skills(project.getSkills().stream().map(SkillMapper::toModel).collect(Collectors.toSet())).build();
     }
 }

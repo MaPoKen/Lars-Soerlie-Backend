@@ -3,7 +3,6 @@ package no.larssorlie.models.mappers;
 import no.larssorlie.models.domain.Experience;
 import no.larssorlie.models.dto.ExperienceDTO;
 import no.larssorlie.models.dto.NewExperienceDTO;
-import no.larssorlie.models.dto.SkillDTO;
 
 import java.util.stream.Collectors;
 
@@ -14,7 +13,7 @@ public class ExperienceMapper {
                 .id(experience.getId())
                 .title(experience.getTitle())
                 .description(experience.getDescription())
-                .skills(experience.getSkills().stream().map(SkillDTO::toDto).collect(Collectors.toSet()))
+                .skills(experience.getSkills().stream().map(SkillMapper::toDTO).collect(Collectors.toSet()))
                 .projects(experience.getProjects().stream().map(ProjectMapper::toDTO).collect(Collectors.toSet()))
                 .build();
     }
@@ -25,7 +24,7 @@ public class ExperienceMapper {
                 .id(experience.getId())
                 .title(experience.getTitle())
                 .description(experience.getDescription())
-                .skills(experience.getSkills().stream().map(SkillDTO::toModel).collect(Collectors.toSet()))
+                .skills(experience.getSkills().stream().map(SkillMapper::toModel).collect(Collectors.toSet()))
                 .projects(experience.getProjects().stream().map(ProjectMapper::toModel).collect(Collectors.toSet()))
                 .build();
     }
@@ -35,7 +34,18 @@ public class ExperienceMapper {
                 .toBuilder()
                 .title(experience.getTitle())
                 .description(experience.getDescription())
-                .skills(experience.getSkills().stream().map(SkillDTO::toModel).collect(Collectors.toSet()))
+                .skills(experience.getSkills().stream().map(SkillMapper::toModel).collect(Collectors.toSet()))
+                .projects(experience.getProjects().stream().map(ProjectMapper::toModel).collect(Collectors.toSet()))
+                .build();
+    }
+
+    public static Experience toModel(NewExperienceDTO experience, Long id){
+        return new Experience()
+                .toBuilder()
+                .id(id)
+                .title(experience.getTitle())
+                .description(experience.getDescription())
+                .skills(experience.getSkills().stream().map(SkillMapper::toModel).collect(Collectors.toSet()))
                 .projects(experience.getProjects().stream().map(ProjectMapper::toModel).collect(Collectors.toSet()))
                 .build();
     }

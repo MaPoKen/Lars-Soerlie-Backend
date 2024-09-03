@@ -5,6 +5,7 @@ import jakarta.inject.Singleton;
 import java.util.List;
 import no.larssorlie.models.dto.NewProjectDTO;
 import no.larssorlie.models.dto.ProjectDTO;
+import no.larssorlie.models.mappers.ProjectMapper;
 import no.larssorlie.repositories.ProjectRepository;
 import reactor.core.publisher.Mono;
 
@@ -14,15 +15,15 @@ public class ProjectService {
   private ProjectRepository projectRepository;
 
   public Mono<List<ProjectDTO>> getAllProjects() {
-    return projectRepository.findAll().map(ProjectDTO::toDTO).collectList();
+    return projectRepository.findAll().map(ProjectMapper::toDTO).collectList();
   }
 
   public Mono<ProjectDTO> getProject(Long id) {
-    return projectRepository.findById(id).map(ProjectDTO::toDTO);
+    return projectRepository.findById(id).map(ProjectMapper::toDTO);
   }
 
   public Mono<ProjectDTO> createProject(NewProjectDTO newProject) {
-    return projectRepository.save(newProject.toModel()).map(ProjectDTO::toDTO);
+    return projectRepository.save(ProjectMapper.toModel(newProject)).map(ProjectMapper::toDTO);
   }
 
   public Mono<Long> deleteProject(Long id) {
@@ -31,7 +32,7 @@ public class ProjectService {
 
   public Mono<ProjectDTO> updateProject(Long id, NewProjectDTO newProject) {
     return projectRepository
-      .update(newProject.toModel(id))
-      .map(ProjectDTO::toDTO);
+      .update(ProjectMapper.toModel(newProject,id))
+      .map(ProjectMapper::toDTO);
   }
 }

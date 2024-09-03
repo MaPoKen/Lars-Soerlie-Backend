@@ -2,8 +2,17 @@ package no.larssorlie.models.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Objects;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder(toBuilder = true)
 @Entity
 @Table(name = "skills")
 public class Skill {
@@ -16,29 +25,6 @@ public class Skill {
 
   @NotNull
   private String iconUrl;
-
-  public String getIconUrl() {
-    return iconUrl;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public Skill(Long id, String name, String iconUrl) {
-    this.id = id;
-    this.name = name;
-    this.iconUrl = iconUrl;
-  }
-
-  public Skill(String name, String iconUrl) {
-    this.name = name;
-    this.iconUrl = iconUrl;
-  }
 
   @Override
   public boolean equals(Object o) {

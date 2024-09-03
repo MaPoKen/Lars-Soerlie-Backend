@@ -5,6 +5,7 @@ import jakarta.inject.Singleton;
 import java.util.List;
 import no.larssorlie.models.dto.NewSkillDTO;
 import no.larssorlie.models.dto.SkillDTO;
+import no.larssorlie.models.mappers.SkillMapper;
 import no.larssorlie.repositories.SkillRepository;
 import reactor.core.publisher.Mono;
 
@@ -14,15 +15,15 @@ public class SkillService {
   private SkillRepository skillRepository;
 
   public Mono<List<SkillDTO>> getAllSkills() {
-    return skillRepository.findAll().map(SkillDTO::toDto).collectList();
+    return skillRepository.findAll().map(SkillMapper::toDTO).collectList();
   }
 
   public Mono<SkillDTO> getSkill(Long id) {
-    return skillRepository.findById(id).map(SkillDTO::toDto);
+    return skillRepository.findById(id).map(SkillMapper::toDTO);
   }
 
   public Mono<SkillDTO> createSkill(NewSkillDTO newSkill) {
-    return skillRepository.save(newSkill.toModel()).map(SkillDTO::toDto);
+    return skillRepository.save(SkillMapper.toModel(newSkill)).map(SkillMapper::toDTO);
   }
 
   public Mono<Long> deleteSkill(Long id) {
@@ -30,6 +31,6 @@ public class SkillService {
   }
 
   public Mono<SkillDTO> updateSkill(Long id, NewSkillDTO skill) {
-    return skillRepository.update(skill.toModel(id)).map(SkillDTO::toDto);
+    return skillRepository.update(SkillMapper.toModel(skill,id)).map(SkillMapper::toDTO);
   }
 }
