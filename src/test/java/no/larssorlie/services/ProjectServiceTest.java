@@ -158,7 +158,7 @@ public class ProjectServiceTest {
       .thenReturn(Mono.just(pUpdated));
 
     Mono<ProjectDTO> t = this.projectService.updateProject(id, p);
-    assertEquals(Objects.requireNonNull(t.block()).getId(), 99L);
+    assertEquals(Objects.requireNonNull(t.block()).getId(), id);
     verify(projectRepository).update(ProjectMapper.toModel(p, id));
   }
 
