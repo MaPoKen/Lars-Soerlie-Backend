@@ -10,6 +10,7 @@ terraform {
       version= "1.22.0"
     }
 
+
   }
   required_version = ">= 1.9.5"
 
@@ -21,11 +22,11 @@ provider "aws" {
 }
 
 provider "postgresql" {
-  database        = "postgres"
-  host            = data.terraform_remote_state.postgres.outputs.db_address
-  port            = 5432
+  host            = "127.0.0.1"
+  port = 5233
   username        = data.terraform_remote_state.postgres.outputs.db_username
   password        = data.terraform_remote_state.postgres.outputs.db_password
+  superuser       = false
   connect_timeout = 30 
 }
 
@@ -41,8 +42,12 @@ data "terraform_remote_state" "postgres" {
   }
 }
 
+resource "postgresql_role" "lars_soerlie_backend" {
+  name     = "lars_soerlie_backend"
+  login    = true
+  password = "lars_soerlie_backend"
+}
 resource "postgresql_database" "lars_soerlie_backend" {
   name = "lars_soerlie_backend"
-
 }
 
